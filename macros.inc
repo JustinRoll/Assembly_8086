@@ -1,0 +1,38 @@
+__moveCursor macro
+	push ax
+	push bx
+	push dx
+	mov ah, 02h
+	mov bh, 00h
+	mov dl, 05
+	mov dh, 05
+	int 10h
+	pop dx
+	pop bx
+	pop ax
+endm
+
+__setScreenMode macro
+    mov ah,00     
+    mov al,13h
+    int 10h
+ endm
+
+ __setupMouse macro
+ 	push ax
+	mov ax,0000  
+    int 33h
+    mov ax,0001   
+    int 33h
+    pop ax
+ endm
+
+ __printString macro string:REQ
+	push ax
+	push dx
+	mov dx, offset string
+	mov ah, 9
+	int 21h
+	pop dx
+	pop ax
+ endm
