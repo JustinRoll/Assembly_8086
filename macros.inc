@@ -36,3 +36,57 @@ __setScreenMode macro
 	pop dx
 	pop ax
  endm
+
+__drawBox macro
+	mov ax, 0600h
+	mov bh, 52h
+	mov cx, 0505h
+	mov dx, 1032h
+	int 10h
+endm
+
+cursor macro row, column
+		mov ah,02
+		mov bh,00
+		mov dh, row
+		mov dl, column
+		int 10h
+endm
+
+display macro dumstring
+	mov ah,09
+	mov dx, offset dumstring
+	int 21h
+endm
+
+fill macro row_start, col_start, row_end, col_end, color
+	local start, again
+	mov dx, row_start
+
+	start:
+		mov cx, col_start
+	again:
+		mov ah,0ch
+		mov al, color
+		int 10h
+		inc cx
+		cmp cx, col_end
+		jne again
+		inc dx
+		cmp dx, row_end
+		jne start
+endm
+
+clearScreen macro
+	mov AX, 0600h
+	mov BH, 07
+	mov DX, 184Fh
+	mov CX, 0000
+	int 10h
+endm
+
+setVideo macro
+	mov ah,0
+	mov al,12h
+	int 10h
+endm
